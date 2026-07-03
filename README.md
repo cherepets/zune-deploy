@@ -19,12 +19,20 @@ First install the necessary dependencies:
 dotnet-sdk-10.0 build-essential cmake libssl-dev 
 ```
 
+Clone this repository:
+```shell
+git clone --recurse-submodules https://github.com/gigalasr/zune-deploy 
+```
+
 Then simply run:
 ```shell
 dotnet build
 ```
 
 ## Usage
+First, make sure that a `.mtpz-data` file is located in your home directory.
+You can find a copy of the `.mtpz-data` file in the `docs` folder.
+
 To deploy a Deploy Kit folder to a Zune you can use the `deploy` subcommand.
 This will automatically deploy the XNA runtime and all files in the provided folder:
 
