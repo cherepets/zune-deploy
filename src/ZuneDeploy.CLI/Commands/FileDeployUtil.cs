@@ -30,6 +30,7 @@ internal static class FileDeployUtil {
             UploadFileToDevice(channel, file, fs, isThumbnail);
         } catch (Exception e) {
             Spinner.Stop($"File Deploy Failed: {e.Message}", true);
+            throw;
         } finally {
             channel.OnBytesWritten -= SpinnerUpdate;
         }
