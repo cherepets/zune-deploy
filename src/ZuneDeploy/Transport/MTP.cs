@@ -4,19 +4,19 @@ using System.Runtime.InteropServices.Marshalling;
 namespace ZuneDeploy.Transport;
 
 static internal partial class MTP {
-    [LibraryImport("libzune-deploy-native.so")]
+    [LibraryImport("zune-deploy-native")]
     internal static partial int OpenConnection(out IntPtr device);
 
-    [LibraryImport("libzune-deploy-native.so")]
+    [LibraryImport("zune-deploy-native")]
 
     internal static partial void CloseConnection(IntPtr device);
 
-    [LibraryImport("libzune-deploy-native.so")]
+    [LibraryImport("zune-deploy-native")]
     internal static partial int PollData(IntPtr device, [MarshalUsing(CountElementName = "size")] byte[] buffer, int size, out int bytesRead);
 
-    [LibraryImport("libzune-deploy-native.so")]
+    [LibraryImport("zune-deploy-native")]
     internal static partial int SendData(IntPtr device, [MarshalUsing(CountElementName = "size")] byte[] buffer, int size);
 
-    [LibraryImport("libzune-deploy-native.so")]
+    [LibraryImport("zune-deploy-native")]
     internal static partial byte GetDeviceFamily(IntPtr device);
 }
