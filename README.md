@@ -13,6 +13,8 @@ CLI tool for deploying XNA applications to the Zune on Linux.
 </div>
 
 
+Checkout [Project Lyra](https://github.com/project-lyra-zune/project-lyra/) for Zune HD modding. 
+
 ## Build
 First install the necessary dependencies:
 ```shell
