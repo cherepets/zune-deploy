@@ -26,10 +26,15 @@
     <AdditionalFiles Include="..\NativeLib\src/enum.hpp" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <NativeLibFile Condition="$([MSBuild]::IsOSPlatform('OSX'))">libzune-deploy-native.dylib</NativeLibFile>
+    <NativeLibFile Condition="$([MSBuild]::IsOSPlatform('Linux'))">libzune-deploy-native.so</NativeLibFile>
+  </PropertyGroup>
+
   <Target Name="BuildNativeLib"
           BeforeTargets="Build"
           Inputs="../NativeLib/CMakeLists.txt"
-          Outputs="../NativeLib/build/zune-deploy-native.so">
+          Outputs="../NativeLib/build/$(NativeLibFile)">
     <Exec ConsoleToMSBuild="true" Command="cmake -S ../NativeLib -B ../NativeLib/build" />
     <Exec ConsoleToMSBuild="true" Command="cmake --build ../NativeLib/build" />
   </Target>
@@ -37,19 +42,14 @@
           BeforeTargets="GetCopyToOutputDirectoryItems;AssignTargetPaths"
           DependsOnTargets="BuildNativeLib">
     <ItemGroup>
-      <None Include="../NativeLib/build/libzune-deploy-native.so"
+      <None Include="../NativeLib/build/$(NativeLibFile)"
             CopyToOutputDirectory="PreserveNewest"
-            Link="libzune-deploy-native.so" />
-      <None Include="../NativeLib/build/vendor/android-file-transfer-linux/libmtp-ng.so.4.6"
+            Link="$(NativeLibFile)" />
+      <!-- Linux builds AFTL as a separate shared lib; macOS static-links it in -->
+      <None Condition="$([MSBuild]::IsOSPlatform('Linux'))"
+            Include="../NativeLib/build/vendor/android-file-transfer-linux/libmtp-ng.so.4.6"
             CopyToOutputDirectory="PreserveNewest"
             Link="libmtp-ng.so.4.6" />
     </ItemGroup>
   </Target>
-
-  <!-- <Target Name="CopyNative" AfterTargets="Build">
-      <Copy SourceFiles="../NativeLib/build/libzune-deploy-native.so"
-            DestinationFolder="$(OutputPath)" />
-      <Copy SourceFiles="../NativeLib/build/vendor/android-file-transfer-linux/libmtp-ng.so"
-            DestinationFolder="$(OutputPath)" />
-  </Target> -->
 </Project>
