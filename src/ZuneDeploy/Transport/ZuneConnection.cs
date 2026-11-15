@@ -9,12 +9,12 @@ namespace ZuneDeploy.Transport;
 /// Connection to Zune with XNA session
 /// </summary>
 internal sealed class ZuneConnection {
-    private readonly AftlTransport _transport;
+    private readonly ITransport _transport;
     private readonly PtpSession _ptp;
     private DeviceInfo? _deviceInfo;
     private bool _trustedApp;
 
-    private ZuneConnection(AftlTransport transport) {
+    private ZuneConnection(ITransport transport) {
         _transport = transport;
         _ptp = new PtpSession(transport);
     }
@@ -24,10 +24,10 @@ internal sealed class ZuneConnection {
     public static Result Open(out ZuneConnection? connection) {
         connection = null;
         // Try Zune HD
-        var result = AftlTransport.Open(0x045E, 0x063E, out var transport);
+        var result = OpenTransport(0x045E, 0x063E, out var transport);
         // SD?
         if (result == Result.ErrorNoDevice) {
-            result = AftlTransport.Open(0x045E, 0x0710, out transport);
+            result = OpenTransport(0x045E, 0x0710, out transport);
         }
         if (result != Result.Ok) {
             return result;
@@ -46,6 +46,12 @@ internal sealed class ZuneConnection {
         }
         connection = zune;
         return Result.Ok;
+    }
+
+    private static Result OpenTransport(ushort vendorId, ushort productId, out ITransport? transport) {
+        var result = AftlTransport.Open(vendorId, productId, out var aftl);
+        transport = aftl;
+        return result;
     }
 
     private Result Connect() {

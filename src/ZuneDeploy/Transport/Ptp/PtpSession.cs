@@ -6,7 +6,7 @@ namespace ZuneDeploy.Transport.Ptp;
 /// <summary>
 /// PTP/MTP transactions
 /// </summary>
-internal sealed class PtpSession(AftlTransport transport) {
+internal sealed class PtpSession(ITransport transport) {
     private const int TimeoutMs = 10000;
     private const ushort TypeCommand = 1, TypeData = 2, TypeResponse = 3;
 

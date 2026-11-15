@@ -6,7 +6,7 @@ namespace ZuneDeploy.Transport.Usb;
 /// <summary>
 /// Android File Transfer for Linux USB transport
 /// </summary>
-internal sealed partial class AftlTransport : IDisposable {
+internal sealed partial class AftlTransport : ITransport {
     private readonly IntPtr _handle;
 
     private AftlTransport(IntPtr handle) {
