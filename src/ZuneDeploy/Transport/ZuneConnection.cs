@@ -49,9 +49,15 @@ internal sealed class ZuneConnection {
     }
 
     private static Result OpenTransport(ushort vendorId, ushort productId, out ITransport? transport) {
-        var result = AftlTransport.Open(vendorId, productId, out var aftl);
-        transport = aftl;
-        return result;
+        if (OperatingSystem.IsWindows()) {
+            var result = WinUsbTransport.Open(vendorId, productId, out var winUsb);
+            transport = winUsb;
+            return result;
+        } else {
+            var result = AftlTransport.Open(vendorId, productId, out var aftl);
+            transport = aftl;
+            return result;
+        }
     }
 
     private Result Connect() {
